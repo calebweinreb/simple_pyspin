@@ -186,29 +186,29 @@ class Camera:
             self.cam.EndAcquisition()
         self.running = False
 
-    def get_image(self, wait=True):
+    def get_image(self, timeout=None):
         '''Get an image from the camera.
 
         Parameters
         ----------
-        wait : bool (default: True)
-            If True, waits for the next image.  Otherwise throws an exception
-            if there isn't one ready.
+        timeout : int (default: None)
+            Wait up to timeout milliseconds for an image if not None.
+                Otherwise, wait indefinitely.
 
         Returns
         -------
         img : PySpin Image
         '''
-        return self.cam.GetNextImage(PySpin.EVENT_TIMEOUT_INFINITE if wait else PySpin.EVENT_TIMEOUT_NONE)
+        return self.cam.GetNextImage(timeout if timeout else PySpin.EVENT_TIMEOUT_INFINITE)
 
-    def get_array(self, wait=True, get_chunk=False):
+    def get_array(self, timeout=None, get_chunk=False):
         '''Get an image from the camera, and convert it to a numpy array.
 
         Parameters
         ----------
-        wait : bool (default: True)
-            If True, waits for the next image.  Otherwise throws an exception
-            if there isn't one ready.
+        timeout : int (default: None)
+            Wait up to timeout milliseconds for an image if not None.
+                Otherwise, wait indefinitely.
         get_chunk : bool (default: False)
             If True, returns chunk data from image frame.
 
@@ -217,8 +217,7 @@ class Camera:
         img : Numpy array
         chunk : PySpin (only if get_chunk == True)
         '''
-
-        img = self.cam.GetNextImage(PySpin.EVENT_TIMEOUT_INFINITE if wait else PySpin.EVENT_TIMEOUT_NONE)
+        img = self.cam.GetNextImage(timeout if timeout else PySpin.EVENT_TIMEOUT_INFINITE)
 
         if get_chunk:
             return img.GetNDArray(), img.GetChunkData()
