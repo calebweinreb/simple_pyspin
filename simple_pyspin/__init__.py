@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# this other fork shows how to get timestamps
+# https://github.com/klecknerlab/simple_pyspin/commit/de866df304d365053a57315b7fa1f0489827f1e1
+
+
 import numpy as np
 import PySpin
 
@@ -253,6 +257,8 @@ class Camera:
 
             if hasattr(prop, 'SetValue'):
                 prop.SetValue(val)
+            elif hasattr(prop, 'SetIntValue') and isinstance(val,int):
+                prop.SetIntValue(val)
             else:
                 prop.FromString(val)
 
