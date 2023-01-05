@@ -23,18 +23,6 @@ import PySpin
 class CameraError(Exception):
     pass
 
-_SYSTEM = None
-
-def list_cameras():
-    '''Return a list of Spinnaker cameras.  Also initializes the PySpin
-    `System`, if needed.  (See PySpin documentation for more info.)'''
-
-    global _SYSTEM
-
-    if _SYSTEM is None:
-        _SYSTEM = PySpin.System.GetInstance()
-
-    return _SYSTEM.GetCameras()
 
 
 class Camera:
@@ -107,8 +95,11 @@ class Camera:
         super().__setattr__("initialized", False)
         super().__setattr__("lock", lock)
 
-        cam_list = list_cameras()
+        self.system = PySpin.System.GetInstance()
+        cam_list = self.system.GetCameras()
+        
         # if debug: print('Found %d camera(s)' % cam_list.GetSize())
+        
         if not cam_list.GetSize():
             raise CameraError("No cameras detected.")
         if isinstance(index, int):
