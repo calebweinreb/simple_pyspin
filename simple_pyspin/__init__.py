@@ -256,8 +256,8 @@ class Camera:
 
             if hasattr(prop, 'SetValue'):
                 prop.SetValue(val)
-            elif hasattr(prop, 'SetIntValue') and isinstance(val,int):
-                prop.SetIntValue(val)
+#             elif hasattr(prop, 'SetIntValue') and isinstance(val,int):
+#                 prop.SetIntValue(val)
             else:
                 prop.FromString(val)
 
